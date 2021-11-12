@@ -1,0 +1,35 @@
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-api-svc
+spec:
+  type: NodePort
+  selector:
+    role: application
+  ports:
+    - port: 80
+      nodePort: 30000
+---
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: web-api-deployment
+  labels: 
+    role: application
+spec:
+  replicas: 10
+  selector: 
+    matchLabels:
+      role: application
+  template:
+    metadata:
+      labels:
+        role: application
+    spec: 
+      containers:
+      - name: web-api
+        image: jyhemark/hellokubernetes:1.0
+        ports: 
+          - containerPort: 80
